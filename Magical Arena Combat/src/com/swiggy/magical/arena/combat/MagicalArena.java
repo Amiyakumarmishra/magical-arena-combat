@@ -7,44 +7,47 @@ import com.swiggy.magical.arena.combat.model.Player;
 
 public class MagicalArena {
 
-    public static void playGame(Player player1, Player player2) {
-        Deque<Player> players = new ArrayDeque<>();
-        players.add(player1);
-        players.add(player2);
-        
-        boolean firstTurn = true;
-        while (player1.isAlive() && player2.isAlive()) {
-            Player attacker;
-            Player defender;
+	public static void playGame(Deque<Player> players) {
 
-            if (firstTurn) {
-                attacker = (player1.getHealth() < player2.getHealth()) ? player1 : player2;
-                defender = (attacker == player1) ? player2 : player1;
-                firstTurn = false;
-            } else {
-                attacker = players.pollFirst();
-                defender = players.peekFirst();
-                players.addLast(attacker);
-            }
+		while (players.peekFirst().isAlive() && players.peekLast().isAlive()) {
+			Player attacker;
+			Player defender;
 
-            System.out.println("Player " + attacker + " attacks");
-            int attackDamage = attacker.attack();
-            int defendDamage = defender.defend();
-            int damageTaken = Math.max(0, attackDamage - defendDamage);
-            defender.takeDamage(damageTaken);
-            System.out.println("Attack damage: " + attackDamage);
-            System.out.println("Defend damage: " + defendDamage);
-            System.out.println("Damage taken by " + defender + ": " + damageTaken);
-            System.out.println(defender + "'s health: " + defender.getHealth());
-            System.out.println();
-        }
-    }
+			attacker = players.pollFirst();
+			defender = players.peekFirst();
+			players.addLast(attacker);
 
+			System.out.println("Player " + attacker + " attacks");
+			int attackDamage = attacker.attack();
+			int defendDamage = defender.defend();
+			int damageTaken = Math.max(0, attackDamage - defendDamage);
+			defender.takeDamage(damageTaken);
+			System.out.println("Attack damage: " + attackDamage);
+			System.out.println("Defend damage: " + defendDamage);
+			System.out.println("Damage taken by " + defender + ": " + damageTaken);
+			System.out.println(defender + "'s health: " + defender.getHealth());
+			System.out.println();
+		}
+
+		Player winner = players.peekFirst().isAlive() ? players.peekFirst() : players.peekLast();
+		System.out.println("\nGame Over!");
+		System.out.println(winner.getPlayerName() + " wins!");
+	}
 
 	public static void main(String[] args) {
-		Player playerA = new Player("A",500, 5, 10);
-		Player playerB = new Player("B",100, 10, 5);
-		playGame(playerA, playerB);
+		Player playerA = new Player("A", 50, 5, 10);
+		Player playerB = new Player("B", 100, 10, 5);
+
+		Deque<Player> players = new ArrayDeque<>();
+		if (playerA.getHealth() < playerB.getHealth()) {
+			players.add(playerA);
+			players.add(playerB);
+		} else {
+			players.add(playerB);
+			players.add(playerA);
+		}
+
+		playGame(players);
 	}
 
 }

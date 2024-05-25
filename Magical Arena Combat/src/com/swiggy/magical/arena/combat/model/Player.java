@@ -3,15 +3,15 @@ package com.swiggy.magical.arena.combat.model;
 import java.util.Random;
 
 public class Player {
-	
+
 	private String playerName;
 	private int health;
 	private int strength;
 	private int attack;
 	private Random random;
 
-	public Player(String playerName,int health, int strength, int attack) {
-		this.playerName=playerName;
+	public Player(String playerName, int health, int strength, int attack) {
+		this.playerName = playerName;
 		this.health = health;
 		this.strength = strength;
 		this.attack = attack;
@@ -80,8 +80,8 @@ public class Player {
 
 	@Override
 	public String toString() {
-		return "Player [playerName=" + playerName + ", health=" + health + "]";
+		return "Player [playerName=" + playerName + ", health=" + health + ", strength=" + strength + ", attack="
+				+ attack + "]";
 	}
-	
-	
+
 }
